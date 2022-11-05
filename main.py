@@ -6,10 +6,9 @@ from pygame.locals import *
 pygame.init()
 
 
- 
-# Colours
-BACKGROUND = (0, 0, 0)
- 
+map = pygame.image.load('pixilart-drawing.png')
+snake = pygame.image.load('pixilart-drawing (2).png')
+apple = pygame.image.load('pixilart-drawing (1).png')
 # Game Setup
 FPS = 60
 fpsClock = pygame.time.Clock()
@@ -20,19 +19,28 @@ BLACK = (0, 0, 0)
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 
-# The main function that controls the game
+def redrawGameWindow():
+  
+    WINDOW.blit(map, (0,0))
+    WINDOW.blit(snake, (x,y))
+    WINDOW.blit(apple, (125,125))
+    pygame.display.update()
+
 def main () :
+  WINDOW.blit(map, (0,0))
+  global x
+  global y
   #Character Attributes
-  x = 50
-  y = 50
-  width = 40
-  height = 60
+  x = 100
+  y = 100
+  width = 125
+  height = 25
   vel = 5
   
   # The main game loop
   looping = True
   while looping :
-    pygame.time.delay(50)
+    pygame.time.delay(30)
 
     for event in pygame.event.get() :
       if event.type == QUIT:
@@ -46,21 +54,15 @@ def main () :
       
     if keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
       x += vel
-      
+       
     if keys[pygame.K_UP] and y > 0:
       y -= vel
       
     if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
-      
-      
-    #Fills character movement  
-    WINDOW.fill(BLACK)
-      
-    #Character
-    pygame.draw.rect(WINDOW, (255, 0, 0), (x, y, width, height))
-    pygame.display.update()
+    redrawGameWindow()
 
+       
     
  
 main()
