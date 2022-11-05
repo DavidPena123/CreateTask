@@ -9,13 +9,12 @@ pygame.init()
 map = pygame.image.load('pixilart-drawing.png')
 snake = pygame.image.load('pixilart-drawing (2).png')
 apple = pygame.image.load('pixilart-drawing (1).png')
+
 # Game Setup
 FPS = 60
 fpsClock = pygame.time.Clock()
 WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 500
-BLACK = (0, 0, 0)
- 
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 
