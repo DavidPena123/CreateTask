@@ -2,7 +2,8 @@ import pygame
 import sys
 import random
 from pygame.locals import *
-
+import random
+import math
 pygame.init()
 
 
@@ -18,6 +19,11 @@ WINDOW_HEIGHT = 500
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 
+def snake_touch_apple(xPos, yPos):
+  xPos = x
+  yPos = y
+  #if x,y touches apples position, delete apple and make a new one.
+
 def redrawGameWindow():
   
     WINDOW.blit(map, (0,0))
@@ -26,7 +32,6 @@ def redrawGameWindow():
     pygame.display.update()
 
 def main () :
-  WINDOW.blit(map, (0,0))
   global x
   global y
   #Character Attributes
@@ -61,7 +66,10 @@ def main () :
       y += vel
     redrawGameWindow()
 
-       
+       #Snake collliding with apple, score + 1
+       #Snake touches border, you lose screen,show score
+       #Snake touches itself, you lose screen,show score
+       #Press any button to start
     
  
 main()
