@@ -20,6 +20,11 @@ WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 xValue = random.randint(0,500)
 yValue = random.randint(0,500)
+for i in range(1):
+  value = xValue % 25
+  for j in range(value):
+    xValue += 1
+#make the same for y value, put in a function so it looks nice, and try it out ^^^^
 def snake_touch_apple(xPos, yPos):
   xPos = x
   yPos = y
