@@ -18,7 +18,8 @@ WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 500
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
-
+xValue = random.randint(0,500)
+yValue = random.randint(0,500)
 def snake_touch_apple(xPos, yPos):
   xPos = x
   yPos = y
