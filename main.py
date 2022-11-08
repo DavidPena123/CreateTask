@@ -49,28 +49,16 @@ def snake_touch_apple(x, y):
 def redrawGameWindow():
   
     WINDOW.blit(map, (0,0))
-    WINDOW.blit(snake, (x,y))
+    print(apple_spawn())
     pygame.display.update()
-
-def main () :
-  global x
-  global y
-  #Character Attributes
-  x = 100
-  y = 100
-  width = 125
-  height = 25
-  vel = 5
-  redrawGameWindow()
-  apple_spawn()
-  pygame.display.update()
-  print(apple_spawn())
-  # The main game loop
+    
+def movement_boundaries(x, y, width, height, vel):
+  
   looping = True
-  while looping :
-    pygame.time.delay(30)
-
-    for event in pygame.event.get() :
+  while looping:
+    pygame.time.delay(50)
+    redrawGameWindow()
+    for event in pygame.event.get():
       if event.type == QUIT:
         looping = False
     
@@ -79,16 +67,30 @@ def main () :
     
     if keys[pygame.K_LEFT] and x > 0:
       x -= vel
-  
-    if keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
+      
+    elif keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - 25:
       x += vel
        
-    if keys[pygame.K_UP] and y > 0:
+    elif keys[pygame.K_UP] and y > 0:
       y -= vel
       
-    if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
+    elif keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - 25:
       y += vel
-      
+    
+    pygame.draw.rect(WINDOW, (0, 0, 255), (x, y, 25, 25))
+    
+    pygame.display.update()
+    
+    
+def main () :
+  #Character Attributes
+  x = 100
+  y = 100
+  width = 125
+  height = 25
+  vel = 25
+  redrawGameWindow()
+  movement_boundaries(x, y, width, height, vel)
 
     
      
