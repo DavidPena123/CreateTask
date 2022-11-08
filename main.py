@@ -6,7 +6,7 @@ import random
 import math
 pygame.init()
 
-
+#images
 map = pygame.image.load('pixilart-drawing.png')
 snake = pygame.image.load('pixilart-drawing (2).png')
 apple = pygame.image.load('pixilart-drawing (1).png')
@@ -18,13 +18,29 @@ WINDOW_WIDTH = 500
 WINDOW_HEIGHT = 500
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
-xValue = random.randint(0,500)
-yValue = random.randint(0,500)
-for i in range(1):
-  value = xValue % 25
-  for j in range(value):
-    xValue += 1
-#make the same for y value, put in a function so it looks nice, and try it out ^^^^
+
+def apple_spawn():
+  spawn_apple = True
+  while spawn_apple:
+    global xValue
+    global yValue
+    xValue = random.randint(0,500)
+    yValue = random.randint(0,500)
+  
+    value = xValue % 25
+    value = 25 - value
+    for j in range(value):
+      xValue += 1
+      
+    secondValue = yValue % 25
+    secondValue = 25 - secondValue
+    for j in range(secondValue):
+      yValue += 1
+  
+    WINDOW.blit(apple, (xValue,yValue))
+    pygame.display.update()
+    spawn_apple = False
+
 def snake_touch_apple(xPos, yPos):
   xPos = x
   yPos = y
@@ -34,18 +50,19 @@ def redrawGameWindow():
   
     WINDOW.blit(map, (0,0))
     WINDOW.blit(snake, (x,y))
-    WINDOW.blit(apple, (125,125))
     pygame.display.update()
 
 def main () :
   global x
   global y
+
   #Character Attributes
   x = 100
   y = 100
   width = 125
   height = 25
   vel = 5
+
   
   # The main game loop
   looping = True
@@ -61,7 +78,7 @@ def main () :
     
     if keys[pygame.K_LEFT] and x > 0:
       x -= vel
-      
+  
     if keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
       x += vel
        
@@ -71,6 +88,7 @@ def main () :
     if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
     redrawGameWindow()
+    apple_spawn()
 
        #Snake collliding with apple, score + 1
        #Snake touches border, you lose screen,show score
