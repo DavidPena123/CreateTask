@@ -20,8 +20,6 @@ WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 
 def apple_spawn():
-  spawn_apple = True
-  while spawn_apple:
     global xValue
     global yValue
     xValue = random.randint(0,500)
@@ -37,13 +35,15 @@ def apple_spawn():
     for j in range(secondValue):
       yValue += 1
   
-    WINDOW.blit(apple, (xValue,yValue))
-    pygame.display.update()
-    spawn_apple = False
+    return WINDOW.blit(apple, (xValue,yValue))
 
-def snake_touch_apple(xPos, yPos):
-  xPos = x
-  yPos = y
+def snake_touch_apple(x, y):
+  xPos = 0
+  yPos = 0
+  if xPos == x and yPos == y:
+    return True
+  else:
+    return False
   #if x,y touches apples position, delete apple and make a new one.
 
 def redrawGameWindow():
@@ -55,15 +55,16 @@ def redrawGameWindow():
 def main () :
   global x
   global y
-
   #Character Attributes
   x = 100
   y = 100
   width = 125
   height = 25
   vel = 5
-
-  
+  redrawGameWindow()
+  apple_spawn()
+  pygame.display.update()
+  print(apple_spawn())
   # The main game loop
   looping = True
   while looping :
@@ -87,8 +88,11 @@ def main () :
       
     if keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
-    redrawGameWindow()
-    apple_spawn()
+      
+
+    
+     
+   
 
        #Snake collliding with apple, score + 1
        #Snake touches border, you lose screen,show score
