@@ -9,20 +9,27 @@ pygame.init()
 #images
 map = pygame.image.load('pixilart-drawing.png')
 snake = pygame.image.load('pixilart-drawing (2).png')
-apple = pygame.image.load('pixilart-drawing (1).png')
+apple_image = pygame.image.load('pixilart-drawing (1).png')
 
 # Game Setup
 FPS = 60
 fpsClock = pygame.time.Clock()
-WINDOW_WIDTH = 500
-WINDOW_HEIGHT = 500
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 600
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption('Snake!')
 
 def apple_spawn():
-  
-    xValue = random.randint(0,500)
-    yValue = random.randint(0,500)
+    aValue = 1
+    bValue = 1
+    xValue = random.randint(50,450)
+    yValue = random.randint(50,450)
+    
+    if xValue < 25:
+      aValue = 0
+    if yValue < 25:
+      bValue = 0
+      
     value = xValue % 25
     value = 25 - value
     for j in range(value):
@@ -32,6 +39,12 @@ def apple_spawn():
     secondValue = 25 - secondValue
     for j in range(secondValue):
       yValue += 1
+      
+    if aValue == 0:
+      xValue = 0
+    if bValue == 0:
+      yValue = 0
+      
     cordinates = [xValue, yValue]
     return cordinates
 
@@ -46,7 +59,7 @@ def snake_touch_apple():
 
 def redrawGameWindow():
    
-    WINDOW.blit(map, (0,0))
+    WINDOW.blit(map, (50,50))
     pygame.display.update()
     
 def movement_boundaries(x, y, width, height, vel):
@@ -76,9 +89,12 @@ def movement_boundaries(x, y, width, height, vel):
       y += vel
     
     player = pygame.draw.rect(WINDOW, (0, 0, 255), (x, y, 25, 25))
-    WINDOW.blit(apple, (cordinates[0],cordinates[1]))
+    apple = WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
-     
+    
+    if player.colliderect(apple):
+      cordinates = apple_spawn()
+      print(cordinates)
      #Snake collliding with apple, score + 1
      #Snake touches border, you lose screen,show score
      #Snake touches itself, you lose screen,show score
