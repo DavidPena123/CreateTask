@@ -22,8 +22,8 @@ pygame.display.set_caption('Snake!')
 def apple_spawn():
     aValue = 1
     bValue = 1
-    xValue = random.randint(50,450)
-    yValue = random.randint(50,450)
+    xValue = random.randint(50,525)
+    yValue = random.randint(50,525)
     
     if xValue < 25:
       aValue = 0
