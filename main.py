@@ -22,8 +22,8 @@ pygame.display.set_caption('Snake!')
 def apple_spawn():
     aValue = 1
     bValue = 1
-    xValue = random.randint(50,525)
-    yValue = random.randint(50,525)
+    xValue = random.randint(50,500)
+    yValue = random.randint(50,500)
     
     if xValue < 25:
       aValue = 0
@@ -48,14 +48,12 @@ def apple_spawn():
     cordinates = [xValue, yValue]
     return cordinates
 
-def snake_touch_apple():
-  xPos = 0
-  yPos = 0
-  if xPos == x and yPos == y:
-    return True
-  else:
-    return False
-  #if x,y touches apples position, delete apple and make a new one.
+def snake_touch_apple(x, y):
+  xPos = x - 25
+  yPos = y - 25
+  snake_cords = [xPos, yPos]
+  return snake_cords
+
 
 def redrawGameWindow():
    
@@ -65,6 +63,7 @@ def redrawGameWindow():
 def movement_boundaries(x, y, width, height, vel):
   cordinates = apple_spawn()
   print(cordinates)
+  char = False
   looping = True
   while looping:
     pygame.time.delay(120)
@@ -92,9 +91,16 @@ def movement_boundaries(x, y, width, height, vel):
     apple = WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
     
+    if char == True:
+      pygame.draw.rect(WINDOW, (0, 0, 255), (x - 25, y - 25, 25, 25))
+    snake_touch_apple(x, y)
     if player.colliderect(apple):
       cordinates = apple_spawn()
       print(cordinates)
+      char = True
+      
+      
+  
      #Snake collliding with apple, score + 1
      #Snake touches border, you lose screen,show score
      #Snake touches itself, you lose screen,show score
