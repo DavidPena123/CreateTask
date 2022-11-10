@@ -87,18 +87,30 @@ def movement_boundaries(x, y, width, height, vel):
     elif keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
     
-    player = pygame.draw.rect(WINDOW, (0, 0, 255), (x, y, 25, 25))
+    player = [pygame.draw.rect(WINDOW, (0, 0, 255), (x, y, 25, 25))]
     apple = WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
     
-    if char == True:
-      pygame.draw.rect(WINDOW, (0, 0, 255), (x - 25, y - 25, 25, 25))
-    snake_touch_apple(x, y)
-    if player.colliderect(apple):
+    if player[0].colliderect(apple):
       cordinates = apple_spawn()
       print(cordinates)
       char = True
       
+    if char == True:
+      bodyX = x
+      bodyY = y 
+      if keys[pygame.K_LEFT] and x > 0:
+        player.append(pygame.draw.rect(WINDOW, (0, 0, 255), (bodyX + 25, bodyY, 25, 25)))
+        bodyX += 25
+        char = False
+      elif keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
+        player.append(pygame.draw.rect(WINDOW, (0, 0, 255), (bodyX - 25, bodyY, 25, 25)))
+        bodyX -= 25
+        char = False
+      pygame.display.update()
+    for i in range(len(player)):
+      player[i]
+   
       
   
      #Snake collliding with apple, score + 1
