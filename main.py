@@ -17,9 +17,13 @@ fpsClock = pygame.time.Clock()
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 600
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+font = pygame.font.SysFont("comicsans", 30, True, True)
 pygame.display.set_caption('Snake!')
 
-def apple_spawn():
+def apple_spawn(body):
+  count = -1
+  loop = True
+  while loop:
     aValue = 1
     bValue = 1
     xValue = random.randint(50,500)
@@ -44,9 +48,15 @@ def apple_spawn():
       xValue = 0
     if bValue == 0:
       yValue = 0
-      
+    
     cordinates = [xValue, yValue]
-    return cordinates
+    for coords in body:
+      if cordinates in coords:
+        count += 1
+        break
+    if count < 0:
+      break
+  return cordinates
 
 def add_body(body):
   for coords in body:
@@ -58,11 +68,12 @@ def redrawGameWindow():
     pygame.display.update()
     
 def movement_boundaries(x, y, width, height, vel):
-  cordinates = apple_spawn()
-  print(cordinates)
-  snakeLength = 0
   body = []
-  char = False
+  cordinates = apple_spawn(body)
+  print(cordinates)
+  snakeLength = 20
+  score = 0
+  text = font.render("Score: " + str(score), 1, (0, 255, 0))
   looping = True
   while looping:
     fpsClock.tick(30)
@@ -95,16 +106,18 @@ def movement_boundaries(x, y, width, height, vel):
     
     if len(body) > snakeLength:
       del body[0]
-      
+    text = font.render("Score: " + str(score), 1, (0, 255, 0))
+    WINDOW.blit(text, (0,10))
     WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
     
     if x == cordinates[0] and y == cordinates[1]:
-      cordinates = apple_spawn()
+      cordinates = apple_spawn(body)
       print(cordinates)
       snakeLength += 1
+      score += 1
+      WINDOW.fill(pygame.Color("black"))
       
-  
      #Snake collliding with apple, score + 1
      #Snake touches border, you lose screen,show score
      #Snake touches itself, you lose screen,show score
@@ -117,6 +130,7 @@ def main () :
   width = 25
   height = 25
   vel = 25
+  
   redrawGameWindow()
   movement_boundaries(x, y, width, height, vel)
 
