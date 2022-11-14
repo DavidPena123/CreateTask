@@ -48,12 +48,9 @@ def apple_spawn():
     cordinates = [xValue, yValue]
     return cordinates
 
-def snake_touch_apple(x, y):
-  xPos = x - 25
-  yPos = y - 25
-  snake_cords = [xPos, yPos]
-  return snake_cords
-
+def add_body(body):
+  for coords in body:
+    pygame.draw.rect(WINDOW, (0, 0, 255), (coords[0], coords[1], 25, 25))
 
 def redrawGameWindow():
    
@@ -63,14 +60,22 @@ def redrawGameWindow():
 def movement_boundaries(x, y, width, height, vel):
   cordinates = apple_spawn()
   print(cordinates)
+  snakeLength = 0
+  body = []
   char = False
   looping = True
   while looping:
-    pygame.time.delay(120)
+    fpsClock.tick(30)
+    pygame.time.delay(90)
     redrawGameWindow()
     for event in pygame.event.get():
       if event.type == QUIT:
         looping = False
+    head = []
+    head.append(x)
+    head.append(y)
+    body.append(head)
+    add_body(body)
   
     # Movement and Boundaries    
     keys = pygame.key.get_pressed()
@@ -86,31 +91,18 @@ def movement_boundaries(x, y, width, height, vel):
       
     elif keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
+      
     
-    player = [pygame.draw.rect(WINDOW, (0, 0, 255), (x, y, 25, 25))]
-    apple = WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
+    if len(body) > snakeLength:
+      del body[0]
+      
+    WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
     
-    if player[0].colliderect(apple):
+    if x == cordinates[0] and y == cordinates[1]:
       cordinates = apple_spawn()
       print(cordinates)
-      char = True
-      
-    if char == True:
-      bodyX = x
-      bodyY = y 
-      if keys[pygame.K_LEFT] and x > 0:
-        player.append(pygame.draw.rect(WINDOW, (0, 0, 255), (bodyX + 25, bodyY, 25, 25)))
-        bodyX += 25
-        char = False
-      elif keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
-        player.append(pygame.draw.rect(WINDOW, (0, 0, 255), (bodyX - 25, bodyY, 25, 25)))
-        bodyX -= 25
-        char = False
-      pygame.display.update()
-    for i in range(len(player)):
-      player[i]
-   
+      snakeLength += 1
       
   
      #Snake collliding with apple, score + 1
