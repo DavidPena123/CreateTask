@@ -51,10 +51,10 @@ def apple_spawn(body):
     
     cordinates = [xValue, yValue]
     for coords in body:
-      if cordinates in coords:
-        count += 1
+      if cordinates[0] == coords[0] and cordinates[1] == coords[1]:
+        count = 1
         break
-    if count < 0:
+    if count == -1:
       break
   return cordinates
 
@@ -73,7 +73,7 @@ def movement_boundaries(x, y, width, height, vel):
   print(cordinates)
   snakeLength = 20
   score = 0
-  text = font.render("Score: " + str(score), 1, (0, 255, 0))
+  text = font.render("Score: " + str(score), 1, (0, 255, 255))
   looping = True
   while looping:
     fpsClock.tick(30)
@@ -106,7 +106,7 @@ def movement_boundaries(x, y, width, height, vel):
     
     if len(body) > snakeLength:
       del body[0]
-    text = font.render("Score: " + str(score), 1, (0, 255, 0))
+    text = font.render("Score: " + str(score), 1, (0, 255, 255))
     WINDOW.blit(text, (0,10))
     WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
     pygame.display.update()
