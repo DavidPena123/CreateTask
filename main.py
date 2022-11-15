@@ -8,7 +8,6 @@ pygame.init()
 
 #images
 map = pygame.image.load('pixilart-drawing.png')
-snake = pygame.image.load('pixilart-drawing (2).png')
 apple_image = pygame.image.load('pixilart-drawing (1).png')
 
 # Game Setup
@@ -24,11 +23,11 @@ def apple_spawn(body):
   numList = []
   for i in range(50,501):
     numList.append(i)
-  for i in range(400):
+  for i in range(800):
     aValue = 1
     bValue = 1
-    xValue = random.randint(50,500)
-    yValue = random.randint(50,500)
+    xValue = random.randint(50,425)
+    yValue = random.randint(50,425)
 
     if xValue < 25:
       aValue = 0
@@ -52,15 +51,27 @@ def apple_spawn(body):
 
     cordinates = [xValue, yValue]
     for coords in body:
-      if cordinates[0] == coords[0]:
+      if cordinates[0] == coords[0] and cordinates[1] == coords[1]:
         xValue += 25
-      if cordinates[1] == coords[1]:
         yValue += 25
       cordinates = [xValue, yValue]
-
+    for coords in body:
+      if cordinates[0] == coords[0] and cordinates[1] == coords[1]:
+        continue
     if cordinates[0] in numList and cordinates[1] in numList:
        return cordinates
+  return cordinates
 
+def check_death(body, x, y):
+  if x < 50 or x > 500:
+    if y < 50 or y > 425:
+      return 1
+  
+  for coords in body:
+    if coords[0] == x and coords[1] == y:
+      return 1
+    
+  return 0
 def add_body(body):
   for coords in body:
     pygame.draw.rect(WINDOW, (0, 0, 255), (coords[0], coords[1], 25, 25))
@@ -74,7 +85,7 @@ def movement_boundaries(x, y, width, height, vel):
   body = []
   cordinates = apple_spawn(body)
   print(cordinates)
-  snakeLength = 20
+  snakeLength = 0
   score = 0
   text = font.render("Score: " + str(score), 1, (0, 255, 255))
   looping = True
@@ -82,9 +93,14 @@ def movement_boundaries(x, y, width, height, vel):
     fpsClock.tick(30)
     pygame.time.delay(90)
     redrawGameWindow()
+    
+    if check_death(body, x, y) == 1:
+      looping = False
+      
     for event in pygame.event.get():
       if event.type == QUIT:
         looping = False
+        
     head = []
     head.append(x)
     head.append(y)
@@ -96,19 +112,18 @@ def movement_boundaries(x, y, width, height, vel):
 
     if keys[pygame.K_LEFT] and x > 0:
       x -= vel
-      
     elif keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
       x += vel
-       
     elif keys[pygame.K_UP] and y > 0:
       y -= vel
-      
     elif keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
       y += vel
+
       
-    
     if len(body) > snakeLength:
       del body[0]
+      
+      
     text = font.render("Score: " + str(score), 1, (0, 255, 255))
     WINDOW.blit(text, (0,10))
     WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
