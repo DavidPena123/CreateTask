@@ -21,42 +21,45 @@ font = pygame.font.SysFont("comicsans", 30, True, True)
 pygame.display.set_caption('Snake!')
 
 def apple_spawn(body):
-  count = -1
-  loop = True
-  while loop:
+  numList = []
+  for i in range(50,501):
+    numList.append(i)
+  for i in range(400):
     aValue = 1
     bValue = 1
     xValue = random.randint(50,500)
     yValue = random.randint(50,500)
-    
+
     if xValue < 25:
       aValue = 0
     if yValue < 25:
       bValue = 0
-      
+
     value = xValue % 25
     value = 25 - value
     for j in range(value):
       xValue += 1
-      
+
     secondValue = yValue % 25
     secondValue = 25 - secondValue
     for j in range(secondValue):
       yValue += 1
-      
+
     if aValue == 0:
       xValue = 0
     if bValue == 0:
       yValue = 0
-    
+
     cordinates = [xValue, yValue]
     for coords in body:
-      if cordinates[0] == coords[0] and cordinates[1] == coords[1]:
-        count = 1
-        break
-    if count == -1:
-      break
-  return cordinates
+      if cordinates[0] == coords[0]:
+        xValue += 25
+      if cordinates[1] == coords[1]:
+        yValue += 25
+      cordinates = [xValue, yValue]
+
+    if cordinates[0] in numList and cordinates[1] in numList:
+       return cordinates
 
 def add_body(body):
   for coords in body:
