@@ -79,9 +79,12 @@ def check_death(body, x, y):
     
   return 0
 def add_body(body, x, y):
+  body_color = 50
   for coords in body:
-    pygame.draw.rect(WINDOW, (0, 0, 255), (coords[0], coords[1], 25, 25))
-
+    pygame.draw.rect(WINDOW, (0, 0, body_color), (coords[0], coords[1], 25, 25))
+    body_color += 10
+    if body_color > 200:
+      body_color = 50
 def redrawGameWindow():
    
     WINDOW.blit(map, (50,50))
