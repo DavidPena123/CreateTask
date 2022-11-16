@@ -19,6 +19,10 @@ WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 font = pygame.font.SysFont("comicsans", 30, True, True)
 pygame.display.set_caption('Snake!')
 
+
+
+#def play_again(answer):
+  #return None
 def apple_spawn(body):
   numList = []
   for i in range(50,501):
@@ -63,16 +67,18 @@ def apple_spawn(body):
   return cordinates
 
 def check_death(body, x, y):
-  if x < 50 or x > 500:
-    if y < 50 or y > 425:
-      return 1
+  if x < 50 or x > 525:
+    return 1
+  
+  if y < 50 or y > 525:
+    return 1
   
   for coords in body:
     if coords[0] == x and coords[1] == y:
       return 1
     
   return 0
-def add_body(body):
+def add_body(body, x, y):
   for coords in body:
     pygame.draw.rect(WINDOW, (0, 0, 255), (coords[0], coords[1], 25, 25))
 
@@ -82,6 +88,9 @@ def redrawGameWindow():
     pygame.display.update()
     
 def movement_boundaries(x, y, width, height, vel):
+  directionX = 0
+  directionY = 0
+  loop = True
   body = []
   cordinates = apple_spawn(body)
   print(cordinates)
@@ -105,28 +114,34 @@ def movement_boundaries(x, y, width, height, vel):
     head.append(x)
     head.append(y)
     body.append(head)
-    add_body(body)
+    add_body(body, x, y)
   
     # Movement and Boundaries    
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_LEFT] and x > 0:
-      x -= vel
+      directionX = -25
+      directionY = 0
     elif keys[pygame.K_RIGHT] and x < WINDOW_WIDTH - width:
-      x += vel
+      directionX = +25
+      directionY = 0
     elif keys[pygame.K_UP] and y > 0:
-      y -= vel
+      directionY = -25
+      directionX = 0
     elif keys[pygame.K_DOWN] and y < WINDOW_HEIGHT - height:
-      y += vel
+      directionY = +25
+      directionX = 0
 
       
     if len(body) > snakeLength:
       del body[0]
-      
+    
       
     text = font.render("Score: " + str(score), 1, (0, 255, 255))
     WINDOW.blit(text, (0,10))
     WINDOW.blit(apple_image, (cordinates[0],cordinates[1]))
+    x += directionX
+    y += directionY
     pygame.display.update()
     
     if x == cordinates[0] and y == cordinates[1]:
@@ -135,10 +150,13 @@ def movement_boundaries(x, y, width, height, vel):
       snakeLength += 1
       score += 1
       WINDOW.fill(pygame.Color("black"))
-      
-     #Snake collliding with apple, score + 1
+  #while loop:
+  #  for event in pygame.event.get():
+  #    if event.type == QUIT:
+  #      loop = False
+  #  play_again(answer)  
+  #  pygame.display.update()
      #Snake touches border, you lose screen,show score
-     #Snake touches itself, you lose screen,show score
      #Press any button to start
     
 def main () :
