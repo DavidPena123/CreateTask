@@ -21,8 +21,6 @@ pygame.display.set_caption('Snake!')
 
 
 
-#def play_again(answer):
-  #return None
 def apple_spawn(body):
   numList = []
   for i in range(50,501):
@@ -94,7 +92,6 @@ def redrawGameWindow():
 def movement_boundaries(x, y, width, height, vel):
   directionX = 0
   directionY = 0
-  loop = True
   body = []
   cordinates = apple_spawn(body)
   print(cordinates)
@@ -154,14 +151,6 @@ def movement_boundaries(x, y, width, height, vel):
       snakeLength += 1
       score += 1
       WINDOW.fill(pygame.Color("black"))
-  #while loop:
-  #  for event in pygame.event.get():
-  #    if event.type == QUIT:
-  #      loop = False
-  #  play_again(answer)  
-  #  pygame.display.update()
-     #Snake touches border, you lose screen,show score
-     #Press any button to start
     
 def main () :
   #Character Attributes
